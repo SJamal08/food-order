@@ -74,7 +74,7 @@ function HomePage() {
 
         <div className='flex flex-col text-justify  mx-3 p-5'>
           {/* Titles container */}
-          <h2 className='font-medium text-lg '>Food</h2>
+          <h2 className='font-medium text-lg text-black text-opacity-50'>Food</h2>
           <h2 className='font-bold text-xl'>Special For You</h2>
         </div>
         <div>
@@ -121,7 +121,7 @@ function HomePage() {
             <LightBulbIcon className="h-5 w-5" color='black'/>
           </IconButton>
           <div className='ml-3'>
-            <h2 className='font-medium text-base text-opacity-50'>your delivery address</h2>
+            <h2 className='font-medium text-base text-opacity-50 text-black'>your delivery address</h2>
             <h2 className='font-bold text-lg'>241 Hillside Road, HASTINGS</h2>
           </div>
 

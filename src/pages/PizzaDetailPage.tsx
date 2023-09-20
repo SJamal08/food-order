@@ -64,7 +64,7 @@ function PizzaDetailPage() {
             {
                 size.map( (s, index) => (
                     <div className='flex items-center justify-center'>
-                        <h1 className={`text-opacity-25 flex justify-center items-center w-10 h-10 cursor-pointer ${sizeSelected === index ? 'font-bold bg-yellow-800 rounded-full  ':''}`} onClick={()=> setSize(index)}>{ s.tag}</h1>
+                        <p className={`text-opacity-50 flex justify-center items-center w-10 h-10 cursor-pointer text-black ${sizeSelected === index ? ' text-opacity-100 font-bold bg-yellow-800 rounded-full  ':''}`} onClick={()=> setSize(index)}>{ s.tag}</p>
                     </div>
                 ))
             }
@@ -72,7 +72,7 @@ function PizzaDetailPage() {
 
         <div className='flex justify-around'>
             <div className='flex flex-col justify-center'>
-                <h2 className='font-medium text-base text-opacity-50'>Price</h2>
+                <h2 className='font-medium text-base text-opacity-50 text-black'>Price</h2>
                 <h2 className='font-bold text-lg'>£{size[sizeSelected].price}</h2>
             </div>
             <div className='bg-black rounded-full flex justify-center items-center w-20'>

@@ -7,7 +7,6 @@ import {
   LightBulbIcon,
 } from "@heroicons/react/24/outline";
 import HomePizzaCard from '../components/HomePizzaCard'
-import { useNavigate } from 'react-router-dom';
 
 function HomePage() {
 

@@ -1,7 +1,5 @@
 import { Card, CardBody, CardHeader, Typography } from '@material-tailwind/react'
 import {
-    PencilIcon,
-    LightBulbIcon,
     FireIcon,
     HeartIcon,
   } from "@heroicons/react/24/solid";

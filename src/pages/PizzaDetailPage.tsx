@@ -1,5 +1,6 @@
-import { ShoppingBagIcon } from '@heroicons/react/24/outline';
-import { FireIcon,  } from '@heroicons/react/24/solid';
+import { Bars3Icon, MagnifyingGlassIcon, ShoppingBagIcon } from '@heroicons/react/24/outline';
+import { ChevronLeftIcon, FireIcon, HeartIcon,  } from '@heroicons/react/24/solid';
+import { Navbar, IconButton } from '@material-tailwind/react';
 import React, { useState } from 'react'
 import { useLocation } from 'react-router-dom';
 
@@ -42,8 +43,22 @@ function PizzaDetailPage() {
 
     console.log(pizza)
   return (
-    <div className='container'>
-      <div className='flex flex-col justify-center'>
+    <div className='container flex flex-col items-center justify-center'>
+    <Navbar className='max-w-screen flex justify-between'>
+      <IconButton
+          variant="text"
+          className="h-6 w-6 text-inherit"
+        >
+          <ChevronLeftIcon className='w-5 h-5' color='black'/>
+        </IconButton>
+        <IconButton
+          variant="text"
+          className="h-6 w-6 text-inherit"
+        >
+          <HeartIcon className='w-5 h-5' color='gray'/>
+        </IconButton>
+      </Navbar>
+      <div className='flex flex-col justify-center w-full'>
         {/* Full container */}
 
         <div className='flex flex-col text-center mx-3 p-5'>
@@ -52,11 +67,11 @@ function PizzaDetailPage() {
           <h2 className='font-medium text-lg my-2'>{pizza.description}</h2>
           <div className='flex justify-center my-4'>
                 <FireIcon className='h-5 w-5' color='orange'/>
-                <h2 className='mx-3'>{pizza.calories} calories</h2>
+                <h2 className='mx-3 text-black text-opacity-50'>{pizza.calories} calories</h2>
             </div>
         </div>
 
-        <div className=''>
+        <div className='flex items-center justify-center'>
             <img className={`border-none rounded-none transform rotate-${rotationAngle} transition-transform duration-300`} src={pizza.img} alt="" />
         </div>
 

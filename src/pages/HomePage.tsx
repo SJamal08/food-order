@@ -1,12 +1,14 @@
 import React, { useRef, useState } from 'react'
 import {
-  IconButton,
+  IconButton, MobileNav, Navbar,
 } from "@material-tailwind/react"
 import {
   PencilIcon,
   LightBulbIcon,
 } from "@heroicons/react/24/outline";
 import HomePizzaCard from '../components/HomePizzaCard'
+import { NavbarDefault } from '../components/Navbar';
+import { Bars3Icon, MagnifyingGlassIcon } from '@heroicons/react/24/solid';
 
 function HomePage() {
 
@@ -25,21 +27,21 @@ function HomePage() {
       description: "Mixed pizza with chesse",
       price: 7.99,
       calories: 238,
-      img: "https://www.pngfind.com/pngs/m/60-603714_pizza-png-pizza-images-with-white-background-transparent.png"
+      img: "https://media.istockphoto.com/id/1042948900/photo/pizza-pepperoni-isolated-on-white-background.webp?b=1&s=170667a&w=0&k=20&c=5TZsBkiQFd8FCz1HU1jdSfc-eZbCpkV6vyuxtvsBjWc="
     },
     {
       title: "Clasico",
       description: "Mixed pizza with chesse",
       price: 7.99,
       calories: 238,
-      img: "https://www.pngfind.com/pngs/m/60-603714_pizza-png-pizza-images-with-white-background-transparent.png"
+      img: "https://media.istockphoto.com/id/1042948900/photo/pizza-pepperoni-isolated-on-white-background.webp?b=1&s=170667a&w=0&k=20&c=5TZsBkiQFd8FCz1HU1jdSfc-eZbCpkV6vyuxtvsBjWc="
     },
     {
       title: "Clasico",
       description: "Mixed pizza with chesse",
       price: 7.99,
       calories: 238,
-      img: "https://www.pngfind.com/pngs/m/60-603714_pizza-png-pizza-images-with-white-background-transparent.png"
+      img: "https://media.istockphoto.com/id/1042948900/photo/pizza-pepperoni-isolated-on-white-background.webp?b=1&s=170667a&w=0&k=20&c=5TZsBkiQFd8FCz1HU1jdSfc-eZbCpkV6vyuxtvsBjWc="
     },
   ];
 
@@ -69,6 +71,20 @@ function HomePage() {
 
   return (
     <div className='container'>
+      <Navbar className='max-w-screen flex justify-between'>
+      <IconButton
+          variant="text"
+          className="h-6 w-6 text-inherit"
+        >
+          <Bars3Icon className='w-5 h-5' color='black'/>
+        </IconButton>
+        <IconButton
+          variant="text"
+          className="h-6 w-6 text-inherit"
+        >
+          <MagnifyingGlassIcon className='w-5 h-5' color='black'/>
+        </IconButton>
+      </Navbar>
       <div className='flex flex-col'>
         {/* Full container */}
 

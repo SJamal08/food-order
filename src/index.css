@@ -14,6 +14,17 @@
           -ms-overflow-style: none;  /* IE and Edge */
           scrollbar-width: none;  /* Firefox */
       }
+
+      .categoryComp{
+        /* transition-duration:0.5s; */
+        transition:  0.5s ease-in-out; 
+      
+      }
+    
+      .pizza-rotation{
+        transition:  0.5s ease-in-out; 
+        transform: rotate(360deg);
+      }
  
     }
   }

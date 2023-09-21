@@ -43,7 +43,7 @@ function PizzaDetailPage() {
 
     console.log(pizza)
   return (
-    <div className='container flex flex-col items-center justify-center'>
+    <div className='flex flex-col items-center justify-center'>
     <Navbar className='max-w-screen flex justify-between'>
       <IconButton
           variant="text"

@@ -7,8 +7,9 @@ import {
   LightBulbIcon,
 } from "@heroicons/react/24/outline";
 import HomePizzaCard from '../components/HomePizzaCard'
-import { NavbarDefault } from '../components/Navbar';
 import { Bars3Icon, MagnifyingGlassIcon } from '@heroicons/react/24/solid';
+import { useAppSelector } from '../logic/redux/reduxHooks';
+import { foodSelectors } from '../logic/redux/reducers/FoodReducer';
 
 function HomePage() {
 
@@ -21,29 +22,9 @@ function HomePage() {
     "extra",
   ]
 
-  const pizzaList = [
-    {
-      title: "Clasico",
-      description: "Mixed pizza with chesse",
-      price: 7.99,
-      calories: 238,
-      img: "https://media.istockphoto.com/id/1042948900/photo/pizza-pepperoni-isolated-on-white-background.webp?b=1&s=170667a&w=0&k=20&c=5TZsBkiQFd8FCz1HU1jdSfc-eZbCpkV6vyuxtvsBjWc="
-    },
-    {
-      title: "Clasico",
-      description: "Mixed pizza with chesse",
-      price: 7.99,
-      calories: 238,
-      img: "https://media.istockphoto.com/id/1042948900/photo/pizza-pepperoni-isolated-on-white-background.webp?b=1&s=170667a&w=0&k=20&c=5TZsBkiQFd8FCz1HU1jdSfc-eZbCpkV6vyuxtvsBjWc="
-    },
-    {
-      title: "Clasico",
-      description: "Mixed pizza with chesse",
-      price: 7.99,
-      calories: 238,
-      img: "https://media.istockphoto.com/id/1042948900/photo/pizza-pepperoni-isolated-on-white-background.webp?b=1&s=170667a&w=0&k=20&c=5TZsBkiQFd8FCz1HU1jdSfc-eZbCpkV6vyuxtvsBjWc="
-    },
-  ];
+  const foods = useAppSelector(foodSelectors.selectAllFoods);
+
+
 
   const [filterSelected, setfilterSelected] = useState(0);
 
@@ -70,7 +51,7 @@ function HomePage() {
   };
 
   return (
-    <div className='container'>
+    <div className=''>
       <Navbar className='max-w-screen flex justify-between'>
       <IconButton
           variant="text"
@@ -99,14 +80,14 @@ function HomePage() {
               <ul className='flex flex-row overflow-x-scroll no-scrollbar'>
                 {
                   filter.map((filter, index) => (
-                    <li className={`mx-7 cursor-pointer ${filterSelected === index ? 'font-bold underline decoration-orange-700': ''}  `} key={index} onClick={() => setfilterSelected(index)}>{filter}</li>
+                    <li style={{transform:filterSelected === index ?'scale(1.1)':''}} className={`mx-7 cursor-pointer ${filterSelected === index ? 'font-bold underline categoryComp decoration-orange-700': ''} capitalize  `} key={index} onClick={() => setfilterSelected(index)}>{filter}</li>
                   ))
                 }
               </ul>
           </div>
         </div>
 
-        <div ref={containerRef} className='flex overflow-x-scroll overflow-y-hidden no-scrollbar '
+        <div ref={containerRef} className='py-4 flex overflow-x-scroll overflow-y-hidden no-scrollbar space-x-4'
                 onMouseDown={handleMouseDown}
                 onMouseUp={handleMouseUp}
                 onMouseMove={handleMouseMove}
@@ -115,8 +96,8 @@ function HomePage() {
           {/* pizza carousel container */}
 
           {
-            pizzaList.map( pizza => (
-              <HomePizzaCard pizza={pizza} />
+            foods.map( (food, index) => (
+              <HomePizzaCard pizza={food} key={index} />
             ))
           }
         </div>

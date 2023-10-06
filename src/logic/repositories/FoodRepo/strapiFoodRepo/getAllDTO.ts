@@ -1,7 +1,13 @@
-import { Food } from "../../model/Food"
+import { string } from "yup"
+import { FoodPayload } from "../IFoodRepository"
+import { Food } from "../../../model/Food"
 
 export interface GetAllDTO {
     data: Daum[]
+    meta: Meta
+  }
+  export interface GetOneDTO {
+    data: Daum
     meta: Meta
   }
   
@@ -11,6 +17,7 @@ export interface GetAllDTO {
   }
   
   export interface Attributes {
+    id?: number
     Title: string
     Description: string
     Price: number
@@ -46,4 +53,30 @@ export interface GetAllDTO {
         return food;
   })
   return foods;
+  }
+
+  export function getOneFoodFromDTO(dto: GetOneDTO): Food {
+        const {Title: title, Description:description, Price: price, img, calories} = dto.data.attributes; 
+        const food: Food = {
+            id: dto.data.id,
+            title,
+            description,
+            price,
+            calories,
+            img
+        };
+        return food;
+  }
+
+  export function formatDataFromFood(food: FoodPayload): { Title: string, Description: string, Price: number, img: string, calories: number } {
+    const {title: Title, description: Description, price: Price, img, calories} = food; 
+    const newPayload = {
+        Title,
+        Description,
+        Price,
+        calories,
+        img
+    };
+    return newPayload;
+
   }

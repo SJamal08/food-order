@@ -1,9 +1,18 @@
 type RowObj = {
-	name: string;
-	tech: string[];
-	date: string;
-	progress: number;
+	// name: string;
+	// tech: string[];
+	// date: string;
+	// progress: number;
 };
+
+// export interface Food {
+//     id: number | string,
+//     title: string,
+//     description:string,
+//     price: number,
+//     calories: number,
+//     img: string
+// }
 
 const tableDataComplex: RowObj[] = [
 	{

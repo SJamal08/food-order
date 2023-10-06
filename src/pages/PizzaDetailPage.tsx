@@ -1,14 +1,32 @@
-import { Bars3Icon, MagnifyingGlassIcon, ShoppingBagIcon } from '@heroicons/react/24/outline';
+import { ShoppingBagIcon } from '@heroicons/react/24/outline';
 import { ChevronLeftIcon, FireIcon, HeartIcon,  } from '@heroicons/react/24/solid';
 import { Navbar, IconButton } from '@material-tailwind/react';
 import React, { useState } from 'react'
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
+import  { OrderActions } from "../logic/redux/reducers/OrderReducer";
+import { useAppDispatch } from '../logic/redux/reduxHooks';
 
 function PizzaDetailPage() {
     const location = useLocation();
     const {pizza} = location.state;
+    const navigate = useNavigate();
+    const dispatch = useAppDispatch();
+
 
     const [sizeSelected, setsizeSelected] = useState(0);
+
+    const renderSTyleSizingForImage = () => {
+        switch (sizeSelected) {
+            case 0:
+                return 48;
+            case 1:
+                return 60;
+            case 2:
+                return 80;    
+            default:
+                break;
+        }
+    }
 
     const setSize = (index: number) => {
         rotation();
@@ -41,7 +59,11 @@ function PizzaDetailPage() {
         }
     }
 
-    console.log(pizza)
+    const addToBasket = () => {
+        dispatch(OrderActions.addInBasket({ food: pizza, size: size[sizeSelected].tag}));
+        navigate('/');
+    }
+
   return (
     <div className='flex flex-col items-center justify-center'>
     <Navbar className='max-w-screen flex justify-between'>
@@ -72,10 +94,10 @@ function PizzaDetailPage() {
         </div>
 
         <div className='flex items-center justify-center'>
-            <img className={`border-none rounded-none transform rotate-${rotationAngle} transition-transform duration-300`} src={pizza.img} alt="" />
+            <img className={`border-none rounded-none transform rotate-${rotationAngle} transition-transform duration-300 h-${renderSTyleSizingForImage()}`} src={pizza.img} alt="" />
         </div>
 
-        <div className={`flex justify-between px-24 my-10`}>
+        <div className={`flex justify-between px-40 my-10 items-center w-full `}>
             {
                 size.map( (s, index) => (
                     <div className='flex items-center justify-center'>
@@ -90,7 +112,7 @@ function PizzaDetailPage() {
                 <h2 className='font-medium text-base text-opacity-50 text-black'>Price</h2>
                 <h2 className='font-bold text-lg'>£{size[sizeSelected].price}</h2>
             </div>
-            <div className='bg-black rounded-full flex justify-center items-center w-20'>
+            <div onClick={addToBasket} className='bg-black rounded-full flex justify-center items-center w-20'>
                 <ShoppingBagIcon className='w-10 h-10 bg-yellow-700 rounded-full' color='black'/>
             </div>
         </div>

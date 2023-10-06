@@ -8,6 +8,8 @@ import {
 } from "@material-tailwind/react";
  
 export function NavbarDefault() {
+
+
   const [openNav, setOpenNav] = React.useState(false);
  
   React.useEffect(() => {

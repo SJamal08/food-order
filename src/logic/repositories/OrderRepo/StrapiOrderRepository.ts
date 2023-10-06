@@ -1,18 +1,14 @@
 import axios from "axios";
-import { Food } from "../../model/Food";
-import { IFoodRepository } from "../IFoodRepository";
-import { GetAllDTO, getFoodsFromDTO } from "./getAllDTO";
+import { Order } from "../../model/Order";
+import { IOrderRepository, OrderPayload } from "./IOrderRepo";
 
+// /api/orders
 const api_base_url = `http://localhost:1337/api`;
-export class StrapiFoodRepository implements IFoodRepository {
-    create(food: Food): Promise<Food> {
-        throw new Error("Method not implemented.");
-    }
-    async getAll(): Promise<Food[] | null> {
+export class StrapiOrderRepository implements IOrderRepository {
+    async create(order: OrderPayload): Promise<Order | null> {
         try {
-            const response = await axios.get(`${api_base_url}/foods`);
-            const dto: GetAllDTO = response.data;
-            return getFoodsFromDTO(dto);  
+            const response = await axios.post(`${api_base_url}/orders`, {data: order});
+            return Promise.resolve(response.data);
         } catch (error: any) {
             if (error.response) {
                 // The request was made and the server responded with a status code
@@ -32,15 +28,17 @@ export class StrapiFoodRepository implements IFoodRepository {
               console.log(error.config);
               return null;
         }
-        // throw new Error("Method not implemented.");
     }
-    getOne(title: String): Promise<Food | null> {
+    getAll(): Promise<Order[] | null> {
         throw new Error("Method not implemented.");
     }
-    delete(id: String): Promise<boolean> {
+    getOnebyId(id: number | String): Promise<Order | null> {
         throw new Error("Method not implemented.");
     }
-    update(id: String, data: Food): Promise<Food> {
+    delete(id: number | String): Promise<boolean> {
+        throw new Error("Method not implemented.");
+    }
+    update(id: number | String, data: OrderPayload): Promise<Order | null> {
         throw new Error("Method not implemented.");
     }
     

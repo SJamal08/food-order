@@ -8,11 +8,16 @@ function App() {
   const dispatch = useAppDispatch();
   useEffect(() => {
     const getAllFoods = async () => {
-      const allFoods =  await foodcontroller.getAll();
+      const allFoods = await foodcontroller.getAll();
+      console.log("allFoods")
+      console.log(allFoods)
       if (allFoods)
-        dispatch(foodActions.setFoodList(allFoods));
+        {
+          dispatch(foodActions.setFoodList(allFoods));
+        }
     }
     getAllFoods();
+    // alert("any message")
   }, [dispatch])
   
   return (

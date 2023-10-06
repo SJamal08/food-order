@@ -1,15 +1,19 @@
 import React, { useRef, useState } from 'react'
 import {
-  IconButton, MobileNav, Navbar,
+  Badge,
+  Button,
+  IconButton, MobileNav, Navbar, Typography,
 } from "@material-tailwind/react"
 import {
   PencilIcon,
   LightBulbIcon,
 } from "@heroicons/react/24/outline";
 import HomePizzaCard from '../components/HomePizzaCard'
-import { Bars3Icon, MagnifyingGlassIcon } from '@heroicons/react/24/solid';
+import { Bars3Icon, MagnifyingGlassIcon, ShoppingCartIcon } from '@heroicons/react/24/solid';
 import { useAppSelector } from '../logic/redux/reduxHooks';
 import { foodSelectors } from '../logic/redux/reducers/FoodReducer';
+import  { OrderActions, OrderSelectors } from "../logic/redux/reducers/OrderReducer";
+import { useNavigate } from 'react-router-dom';
 
 function HomePage() {
 
@@ -23,11 +27,11 @@ function HomePage() {
   ]
 
   const foods = useAppSelector(foodSelectors.selectAllFoods);
+  const basket = useAppSelector(OrderSelectors.selectBasket);
 
-
+const navigate = useNavigate();
 
   const [filterSelected, setfilterSelected] = useState(0);
-
 
   const [scrollX, setScrollX] = useState(0);
   const containerRef = useRef<any>(null);
@@ -50,21 +54,75 @@ function HomePage() {
     setScrollX(newScrollX);
   };
 
+  const navList = (
+    <ul className="mb-4 mt-2 flex flex-col gap-2">
+      <Typography
+        as="li"
+        variant="small"
+        color="blue-gray"
+        className="p-1 font-normal"
+      >
+        <p className="flex items-center cursor-pointer text-black">
+          Pages
+        </p>
+      </Typography>
+      <Typography
+        as="li"
+        variant="small"
+        color="blue-gray"
+        className="p-1 font-normal"
+        // onClick={() => }
+      >
+        <p className="flex items-center cursor-pointer text-">
+          My Orders
+        </p>
+      </Typography>
+    </ul>
+  );
+
+  const [openNav, setOpenNav] = useState(false);
+
   return (
     <div className=''>
-      <Navbar className='max-w-screen flex justify-between'>
-      <IconButton
+      <Navbar className='max-w-full flex justify-between bg-blueSecondary'>
+          <IconButton
           variant="text"
-          className="h-6 w-6 text-inherit"
+          className="ml-auto h-6 w-6 text-inherit hover:bg-transparent focus:bg-transparent active:bg-transparent"
+          ripple={false}
+          onClick={() => setOpenNav(!openNav)}
         >
+          {/* {openNav ? (
+            <Bars3Icon className='w-5 h-5' color='black'/>
+          ) : (
+            <Bars3Icon className='w-5 h-5' color='black'/>
+          )} */}
           <Bars3Icon className='w-5 h-5' color='black'/>
         </IconButton>
-        <IconButton
-          variant="text"
-          className="h-6 w-6 text-inherit"
-        >
-          <MagnifyingGlassIcon className='w-5 h-5' color='black'/>
-        </IconButton>
+
+        <MobileNav open={openNav}>
+        <div className="container mx-auto">
+          {navList}
+        </div>
+      {/* </div> */}
+
+      </MobileNav>
+        <div className='flex pl-2 pr-2'>
+          <IconButton
+            variant="text"
+            className="h-6 w-6 text-inherit mr-2"
+            onClick={() => navigate('/basket')}
+          >
+          <Badge content={basket.reduce((previous, current) => previous + current.quantity, 0)}  className={`${foods.length === 0 ? "hidden": ""}`} >
+            <ShoppingCartIcon className='w-5 h-5' color='black' />
+          </Badge>
+          </IconButton>
+          <IconButton
+            variant="text"
+            className="h-6 w-6 text-inherit space-x-2"
+          >
+            <MagnifyingGlassIcon className='w-5 h-5' color='black'/>
+          </IconButton>
+        </div>
       </Navbar>
       <div className='flex flex-col'>
         {/* Full container */}

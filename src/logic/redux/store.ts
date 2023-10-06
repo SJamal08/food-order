@@ -1,24 +1,13 @@
 import { configureStore, ThunkAction, Action } from '@reduxjs/toolkit';
 import FoodReducer from './reducers/FoodReducer';
-
-// import userReducer  from 'app/redux/features/userSlice';
-// import viewModelsReducer  from 'app/redux/features/vms';
-// import controllerReducer  from './controllers';
-// import generalReducer  from './general';
-// import homePageReducers from './homePageReducers';
-
-
+import OrderReducer from './reducers/OrderReducer';
+import AuthReducer from './reducers/AuthReducer';
 
 export const store = configureStore({
   reducer: {
-    // homePage : homePageReducers,
-    // controllers : controllerReducer,
-    // generalReducer : generalReducer,
-    // repositories : repositoriesReducer,
-    // user: userReducer,
-    // viewModels : viewModelsReducer,
-    // homePageReducer : homePageRReducer
     foodReducer: FoodReducer,
+    orderReducer: OrderReducer,
+    authReducer: AuthReducer
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({

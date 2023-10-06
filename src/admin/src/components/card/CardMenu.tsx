@@ -6,9 +6,14 @@ import { FiSettings } from "react-icons/fi";
 import { AiOutlineShop } from "react-icons/ai";
 import { TiLightbulb } from "react-icons/ti";
 
-function CardMenu(props: { transparent?: boolean }) {
+function CardMenu(props: { transparent?: boolean, setAction?: Function }) {
   const { transparent } = props;
   const [open, setOpen] = React.useState(false);
+
+  const changeAction = (nameAction: string) => {
+    if (props.setAction)
+      props.setAction(nameAction)
+  }
   return (
     <Dropdown
       button={
@@ -27,29 +32,29 @@ function CardMenu(props: { transparent?: boolean }) {
       classNames={`${transparent ? "top-8" : "top-11"} right-0 w-max`}
       children={
         <div className="z-50 w-max rounded-xl bg-white py-3 px-4 text-sm shadow-xl shadow-shadow-500 dark:!bg-navy-700 dark:shadow-none">
-          <p className="hover:text-black flex cursor-pointer items-center gap-2 text-gray-600 hover:font-medium">
+          <p onClick={() => changeAction("Add")} className="hover:text-black flex cursor-pointer items-center gap-2 text-gray-600 hover:font-medium">
             <span>
               <AiOutlineUser />
             </span>
-            Panel 1
+            Add
           </p>
-          <p className="hover:text-black mt-2 flex cursor-pointer items-center gap-2 pt-1 text-gray-600 hover:font-medium">
+          <p onClick={() => changeAction("Delete")} className="hover:text-black mt-2 flex cursor-pointer items-center gap-2 pt-1 text-gray-600 hover:font-medium">
             <span>
               <AiOutlineShop />
             </span>
-            Panel 2
+            Delete
           </p>
-          <p className="hover:text-black mt-2 flex cursor-pointer items-center gap-2 pt-1 text-gray-600 hover:font-medium">
+          <p onClick={() => changeAction("Update")} className="hover:text-black mt-2 flex cursor-pointer items-center gap-2 pt-1 text-gray-600 hover:font-medium">
             <span>
               <TiLightbulb />
             </span>
-            Panel 3
+            Update
           </p>
-          <p className="hover:text-black mt-2 flex cursor-pointer items-center gap-2 pt-1 text-gray-600 hover:font-medium">
+          <p onClick={() => changeAction("Hide")} className="hover:text-black mt-2 flex cursor-pointer items-center gap-2 pt-1 text-gray-600 hover:font-medium">
             <span>
               <FiSettings />
             </span>
-            Panel 4
+            Hide
           </p>
         </div>
       }

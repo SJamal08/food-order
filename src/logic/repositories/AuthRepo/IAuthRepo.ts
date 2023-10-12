@@ -4,6 +4,7 @@ export interface RegisterPayload {
     username: string,
     email: string,
     password: string,
+    customerId: string,
 }
 
 export interface LoginPayload {
@@ -19,4 +20,6 @@ export interface AuthResponse {
 export interface IAuthRepo {
     register(payload: RegisterPayload) : Promise<AuthResponse | null>,
     login(payload: LoginPayload) : Promise<AuthResponse | null>,
+    me(): Promise<User | null>,
+    logout(): Promise<boolean>
 }

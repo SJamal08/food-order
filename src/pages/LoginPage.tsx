@@ -1,43 +1,48 @@
-import React from 'react'
+import React, { useState } from 'react'
 import AppInput from '../components/AppInput'
 import { useNavigate } from 'react-router-dom';
 import { useAppDispatch } from '../logic/redux/reduxHooks';
 import { useFormik } from 'formik';
 import { authActions, authController } from '../logic/redux/reducers/AuthReducer';
 import * as Yup from 'yup';
+import { ROUTES } from '../utils/constants';
+import { ClipLoader } from 'react-spinners';
+import { toast } from 'react-toastify';
 
 function LoginPage() {
 
     const navigate = useNavigate();
     const dispatch = useAppDispatch();
+    const [isLoading, setIsLoading] = useState(false);
 
     const userSchema = Yup.object({
         email:  Yup.string().email("Le mail est invalide ").required("le mail est requis"),
         password:  Yup.string().min(4 ,  "Minimun 4 lettres please ").required("le mot de passe est requis"),
       });
     const formik = useFormik({
-        initialValues: {email : "user@strapi.io"  , password : "strapiPassword" },
+        initialValues: {email : "user@gmail.com"  , password : "strapiPassword" },
         validationSchema: userSchema,
         onSubmit: async (values) => {
-         const result =  await authController.login({email: values.email, password: values.password})
-         console.log("result apres login")
-         console.log(result)
+          setIsLoading(true);
+          console.log("values in login")
+          console.log(values)
+         const result =  await authController.login({email: values.email, password: values.password});
          if(result){
           dispatch(authActions.setAuth(result));
-          console.log("reussite")
-          navigate("/")
+          console.log("reussite");
+          navigate(ROUTES.homePage);
+          toast.success("Login Successfully");
+         } else {
+           toast.error("Login Error! Retry later");
+          console.log("echec");
          }
-          // formik.setSubmitting(false)
-        //   setTimeout(() => {
-        //     navigate(routes.home);
-        // }, 300);
+         setIsLoading(false);
         },
       });
 
 
   return (
-    <div className="w-full   m-auto mx-auto bg-white rounded-lg 
-    ">
+    <div className="w-full m-auto mx-auto bg-white rounded-lg">
    <div className="text-center border-b-2 pb-2">
      <h1 style={{fontWeight : 400}} className="text-xl ">Connexion </h1>
    </div>
@@ -45,9 +50,8 @@ function LoginPage() {
  <div className="px-6 flex flex-col justify-center items-center">
 
  <form onSubmit={formik.handleSubmit} className="mt-6 max-w-lg ">
-       <AppInput  label="Email" value={formik.values.email} formik={formik} />
-       <AppInput    label="Mot de passe" value={formik.values.email} type="password" formik={formik} />
-      {/* <ForgotPasswordButton /> */}
+       <AppInput label="email" value={formik.values.email} formik={formik} />
+       <AppInput label="password" value={formik.values.password} type="password" formik={formik} />
    
         <div className="mt-6">
         <button 
@@ -56,20 +60,14 @@ function LoginPage() {
                 type="submit">
                     Connexion
             </button>
+            <ClipLoader
+                loading={isLoading}
+                size={50}
+                aria-label="Loading Spinner"
+                data-testid="loader"
+              />
         </div>
       </form>
-
- <div className="flex items-center justify-between mt-4">
-     <span className="w-1/5 border-b  lg:w-1/5" />
-     <a
-       href="#"
-       className="text-xs text-center text-gray-500 uppercase  hover:underline"
-     >
-       ou se connecter avec
-     </a>
-     <span className="w-1/5 border-b  lg:w-1/5" />
-   </div>
-   
    
    <p className="mt-8 text-xs font-light text-center text-gray-400">
      {" "}

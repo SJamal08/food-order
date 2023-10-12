@@ -13,7 +13,8 @@ import { Bars3Icon, MagnifyingGlassIcon, ShoppingCartIcon } from '@heroicons/rea
 import { useAppSelector } from '../logic/redux/reduxHooks';
 import { foodSelectors } from '../logic/redux/reducers/FoodReducer';
 import  { OrderActions, OrderSelectors } from "../logic/redux/reducers/OrderReducer";
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
+import { NavbarDefault } from '../components/Navbar';
 
 function HomePage() {
 
@@ -30,6 +31,7 @@ function HomePage() {
   const basket = useAppSelector(OrderSelectors.selectBasket);
 
 const navigate = useNavigate();
+
 
   const [filterSelected, setfilterSelected] = useState(0);
 
@@ -84,46 +86,6 @@ const navigate = useNavigate();
 
   return (
     <div className=''>
-      <Navbar className='max-w-full flex justify-between bg-blueSecondary'>
-          <IconButton
-          variant="text"
-          className="ml-auto h-6 w-6 text-inherit hover:bg-transparent focus:bg-transparent active:bg-transparent"
-          ripple={false}
-          onClick={() => setOpenNav(!openNav)}
-        >
-          {/* {openNav ? (
-            <Bars3Icon className='w-5 h-5' color='black'/>
-          ) : (
-            <Bars3Icon className='w-5 h-5' color='black'/>
-          )} */}
-          <Bars3Icon className='w-5 h-5' color='black'/>
-        </IconButton>
-
-        <MobileNav open={openNav}>
-        <div className="container mx-auto">
-          {navList}
-        </div>
-      {/* </div> */}
-
-      </MobileNav>
-        <div className='flex pl-2 pr-2'>
-          <IconButton
-            variant="text"
-            className="h-6 w-6 text-inherit mr-2"
-            onClick={() => navigate('/basket')}
-          >
-          <Badge content={basket.reduce((previous, current) => previous + current.quantity, 0)}  className={`${foods.length === 0 ? "hidden": ""}`} >
-            <ShoppingCartIcon className='w-5 h-5' color='black' />
-          </Badge>
-          </IconButton>
-          <IconButton
-            variant="text"
-            className="h-6 w-6 text-inherit space-x-2"
-          >
-            <MagnifyingGlassIcon className='w-5 h-5' color='black'/>
-          </IconButton>
-        </div>
-      </Navbar>
       <div className='flex flex-col'>
         {/* Full container */}
 

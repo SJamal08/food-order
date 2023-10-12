@@ -5,6 +5,7 @@ import React, { useState } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom';
 import  { OrderActions } from "../logic/redux/reducers/OrderReducer";
 import { useAppDispatch } from '../logic/redux/reduxHooks';
+import { ROUTES } from '../utils/constants';
 
 function PizzaDetailPage() {
     const location = useLocation();
@@ -18,13 +19,13 @@ function PizzaDetailPage() {
     const renderSTyleSizingForImage = () => {
         switch (sizeSelected) {
             case 0:
-                return 48;
+                return 200;
             case 1:
-                return 60;
+                return 300;
             case 2:
-                return 80;    
+                return 350;    
             default:
-                break;
+                return 200;
         }
     }
 
@@ -61,66 +62,68 @@ function PizzaDetailPage() {
 
     const addToBasket = () => {
         dispatch(OrderActions.addInBasket({ food: pizza, size: size[sizeSelected].tag}));
-        navigate('/');
+        navigate(ROUTES.homePage);
     }
 
   return (
-    <div className='flex flex-col items-center justify-center'>
-    <Navbar className='max-w-screen flex justify-between'>
-      <IconButton
-          variant="text"
-          className="h-6 w-6 text-inherit"
-        >
-          <ChevronLeftIcon className='w-5 h-5' color='black'/>
-        </IconButton>
-        <IconButton
-          variant="text"
-          className="h-6 w-6 text-inherit"
-        >
-          <HeartIcon className='w-5 h-5' color='gray'/>
-        </IconButton>
-      </Navbar>
-      <div className='flex flex-col justify-center w-full'>
-        {/* Full container */}
-
-        <div className='flex flex-col text-center mx-3 p-5'>
+        <div className='flex flex-1 flex-col justify-center h-screen w-full'>
+            <div className='flex flex-col text-center mt-5'>
           {/* Titles container */}
           <h2 className='font-bold text-xl'>{pizza.title}</h2>
-          <h2 className='font-medium text-lg my-2'>{pizza.description}</h2>
-          <div className='flex justify-center my-4'>
+          <h2 className='font-medium text-lg'>{pizza.description}</h2>
+          <div className='flex justify-center'>
                 <FireIcon className='h-5 w-5' color='orange'/>
                 <h2 className='mx-3 text-black text-opacity-50'>{pizza.calories} calories</h2>
             </div>
-        </div>
+            </div>
 
-        <div className='flex items-center justify-center'>
-            <img className={`border-none rounded-none transform rotate-${rotationAngle} transition-transform duration-300 h-${renderSTyleSizingForImage()}`} src={pizza.img} alt="" />
-        </div>
-
-        <div className={`flex justify-between px-40 my-10 items-center w-full `}>
-            {
-                size.map( (s, index) => (
-                    <div className='flex items-center justify-center'>
-                        <p className={`text-opacity-50 flex justify-center items-center w-10 h-10 cursor-pointer text-black ${sizeSelected === index ? ' text-opacity-100 font-bold bg-yellow-800 rounded-full  ':''}`} onClick={()=> setSize(index)}>{ s.tag}</p>
+            <div className='flex-1 flex flex-col justify-between'>
+                <div className='flex-1 flex flex-col justify-center'>
+                    <img className={` mx-auto border-none rounded-none transform rotate-${rotationAngle} transition-transform duration-300`} style={{
+                        height: renderSTyleSizingForImage()
+                    }} src={pizza.img} alt="" />                 
+                </div>
+                <div className=''>
+                    <div className={`flex justify-between px-40  items-center w-full `}>
+                        {
+                            size.map( (s, index) => (
+                                <div className='flex items-center justify-center'>
+                                    <p className={`text-opacity-50 flex justify-center items-center w-10 h-10 cursor-pointer text-black ${sizeSelected === index ? ' text-opacity-100 font-bold bg-yellow-800 rounded-full  ':''}`} onClick={()=> setSize(index)}>{ s.tag}</p>
+                                </div>
+                            ))
+                        }
                     </div>
-                ))
-            }
-        </div>
 
-        <div className='flex justify-around'>
-            <div className='flex flex-col justify-center'>
-                <h2 className='font-medium text-base text-opacity-50 text-black'>Price</h2>
-                <h2 className='font-bold text-lg'>£{size[sizeSelected].price}</h2>
+                    <div className='flex justify-around'>
+                        <div className='flex flex-col justify-center'>
+                            <h2 className='font-medium text-base text-opacity-50 text-black'>Price</h2>
+                            <h2 className='font-bold text-lg'>£{size[sizeSelected].price}</h2>
+                        </div>
+                        <div onClick={addToBasket} className='bg-black rounded-full flex justify-center items-center w-20'>
+                            <ShoppingBagIcon className='w-10 h-10 bg-yellow-700 rounded-full' color='black'/>
+                        </div>
+                    </div>
+                </div>
+
             </div>
-            <div onClick={addToBasket} className='bg-black rounded-full flex justify-center items-center w-20'>
-                <ShoppingBagIcon className='w-10 h-10 bg-yellow-700 rounded-full' color='black'/>
-            </div>
-        </div>
-
 
         </div>
-    </div>
   )
 }
+
+
+// function PizzaDetailPage() {
+//   return (
+//     <div className='bg-yellow-300 flex flex-col h-screen'>
+//         PizzaDetailPage
+//         <div className='bg-red-500 flex-1'>
+// hello
+//         </div>
+//         <div className='bg-green-500 flex-1'>
+// fils
+//         </div>
+//     </div>
+//   )
+// }
 
 export default PizzaDetailPage

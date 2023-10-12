@@ -40,7 +40,7 @@ export interface GetAllDTO {
   }
   
   export function getFoodsFromDTO(dto: GetAllDTO): Food[] {
-    const foods =dto.data.map( element => {
+    const foods = dto.data.map( (element: any) => {
         const {Title: title, Description:description, Price: price, img, calories} = element.attributes; 
         const food: Food = {
             id: element.id,

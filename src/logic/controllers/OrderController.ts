@@ -12,11 +12,15 @@ export class Ordercontroller {
         return await this.orderRepository.getAll();
     }
 
+    async getOneById(id: number): Promise<Order | null> {
+        return await this.orderRepository.getOnebyId(id);
+    }
+
     async create(order: OrderPayload): Promise<Order | null> {
         return await this.orderRepository.create(order);
     }
 
-    async update(id: number | string, order: OrderPayload): Promise<Order | null> {
+    async update(id: number | string, order: any): Promise<Order | null> {
         return await this.orderRepository.update(id, order);
     }
 

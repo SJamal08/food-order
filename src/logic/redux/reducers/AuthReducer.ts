@@ -27,6 +27,9 @@ export const AuthSlice = createSlice({
             state.user = action.payload.user;
             // state.jwt = action.payload.jwt;
         },
+        setCurrentUser: (state , action: PayloadAction<User>) => {
+            state.user = action.payload;
+        },
     },
   })
 

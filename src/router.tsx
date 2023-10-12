@@ -1,5 +1,5 @@
 import React from 'react'
-import { Navigate, Route, Routes } from 'react-router-dom'
+import { Navigate, Outlet, Route, Routes } from 'react-router-dom'
 import HomePage from './pages/HomePage'
 import PizzaDetailPage from './pages/PizzaDetailPage'
 
@@ -8,16 +8,35 @@ import AuthLayout from "./admin/src/layouts/auth";
 import BasketViewPage from './pages/BasketViewPage';
 import LoginPage from './pages/LoginPage';
 import RegisterPage from './pages/RegisterPage';
+import { NavbarDefault } from './components/Navbar';
+import PaymentStripePage from './pages/PaymentStripePage';
+import SuccessPayment from './pages/SuccessPayment';
+
+
+function AppLayout() {
+  return (
+    <div className=''>
+      <NavbarDefault />
+      <Outlet />
+    </div>
+  )
+}
 
 function AppRouter() {
   return (
     <div>
         <Routes>
+          <Route path='/' element={<AppLayout />}>
             <Route path="/"  element={<HomePage/>}/>
             <Route path="/details"  element={<PizzaDetailPage/>}/>
             <Route path="/basket"  element={<BasketViewPage/>}/>
             <Route path="/login"  element={<LoginPage/>}/>
             <Route path="/register"  element={<RegisterPage/>}/>
+            <Route path="/payment"  element={<PaymentStripePage/>}/>
+            {/* <Route path={`/orderSuccess/:orderId`}  element={<SuccessPayment/>}/> localhost:3000/ordersuccess/24324343 // Route params */}
+            <Route path={`/orderSuccess`}  element={<SuccessPayment/>}/> 
+            {/* localhost:3000/ordersuccess/24324343 */}
+          </Route>
 
             {/* routes for admin dashboard */}
 

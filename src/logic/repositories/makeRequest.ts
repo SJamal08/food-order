@@ -1,10 +1,27 @@
 import axios from "axios";
+import { API_BASE_URL } from "../../utils/constants";
 
-const api_base_url = `http://localhost:1337/api`;
-export const makeRequest = async (endpoint: string, data?: any, token?: string): Promise<any | null> => {
+// const api_base_url = API_BASE_URL.strapiUrl;
+// export const headers =  {
+//     Authorization: `Bearer ${localStorage.getItem('jwt')}`,
+//   } 
+
+export interface AuthParams {
+  method: 'post' | 'get' | 'put' | 'delete',
+  endpoint: string,
+  data?: any | undefined,
+  headers?: any
+}
+export const makeRequest = async (authParams: AuthParams): Promise<any | null> => {
+  const {method, endpoint, data, headers} = authParams;
     try {
-        const response = await axios.post(`${api_base_url}${endpoint}`, data);
-        return Promise.resolve(response.data);
+        const response = await axios({
+          method,
+          url: `${endpoint}`,
+          data: data,
+          headers: headers
+        });
+        return response.data;
     } catch (error: any) {
         if (error.response) {
             // The request was made and the server responded with a status code
@@ -22,6 +39,7 @@ export const makeRequest = async (endpoint: string, data?: any, token?: string):
             console.log('Error', error.message);
           }
           console.log(error.config);
+          console.log('on return null');
           return null;
     }
 }

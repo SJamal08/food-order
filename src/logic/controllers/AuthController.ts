@@ -1,3 +1,4 @@
+import { User } from "../model/User";
 import { AuthResponse, IAuthRepo, LoginPayload, RegisterPayload } from "../repositories/AuthRepo/IAuthRepo";
 
 export class AuthController {
@@ -14,4 +15,8 @@ export class AuthController {
     async login(payload: LoginPayload): Promise<AuthResponse | null> {
         return await this.authRepository.login(payload);
     } 
+
+    async me(): Promise<User | null> {
+        return await this.authRepository.me();
+    }
 }

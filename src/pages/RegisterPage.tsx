@@ -1,15 +1,20 @@
-import React from 'react'
+import React, { useState } from 'react'
 import AppInput from '../components/AppInput'
 import { useNavigate } from 'react-router-dom';
 import { useAppDispatch } from '../logic/redux/reduxHooks';
 import { useFormik } from 'formik';
 import { authActions, authController } from '../logic/redux/reducers/AuthReducer';
 import * as Yup from 'yup';
+import { ROUTES } from '../utils/constants';
+import { toast } from 'react-toastify';
+import { ClipLoader } from 'react-spinners';
+import { stripeController } from '../logic/stripe/StripeController';
 
 function RegisterPage() {
 
     const navigate = useNavigate();
     const dispatch = useAppDispatch();
+    const [isLoading, setIsLoading] = useState(false);
 
     const userSchema = Yup.object({
         username: Yup.string(),
@@ -20,18 +25,26 @@ function RegisterPage() {
         initialValues: {username:"SJamal08", email : "user@gmail.com"  , password : "strapiPassword" },
         validationSchema: userSchema,
         onSubmit: async (values) => {
-         const result =  await authController.register(values)
+          setIsLoading(true);
+          console.log("values in register")
+          console.log(values)
+          const customerId = await stripeController.createCustomer({
+            email: values.email,
+            name: values.username
+          });
+         const result =  await authController.register({...values,customerId})
          console.log("result apres register")
          console.log(result)
          if(result){
           dispatch(authActions.setAuth(result));
-          console.log("reussite")
-          navigate("/")
+          console.log("reussite");
+          navigate(ROUTES.homePage);
+          toast.success("Registered Successfully");
+         } else {
+           toast.error("Register Error! Retry later");
+          console.log("echec");
          }
-          // formik.setSubmitting(false)
-        //   setTimeout(() => {
-        //     navigate(routes.home);
-        // }, 300);
+         setIsLoading(false);
         },
       });
 
@@ -46,18 +59,24 @@ function RegisterPage() {
  <div className="px-6 flex flex-col justify-center items-center">
 
  <form onSubmit={formik.handleSubmit} className="mt-6 max-w-lg ">
-        <AppInput  label="Username" value={formik.values.username} formik={formik} />
-       <AppInput  label="Email" value={formik.values.email} formik={formik} />
-       <AppInput    label="Mot de passe" value={formik.values.email} type="password" formik={formik} />
+        <AppInput  label="username" value={formik.values.username} formik={formik} />
+       <AppInput  label="email" value={formik.values.email} formik={formik} />
+       <AppInput    label="password" value={formik.values.password} type="password" formik={formik} />
       {/* <ForgotPasswordButton /> */}
    
         <div className="mt-6">
         <button 
-        className="w-full px-6 py-2.5 text-sm font-medium tracking-wide text-white capitalize transition-colors duration-300 transform bg-gray-800 rounded-lg hover:bg-gray-700 focus:outline-none focus:ring focus:ring-gray-300 focus:ring-opacity-50"
-                disabled={formik.isSubmitting}
-                type="submit">
+            className="w-full px-6 py-2.5 text-sm font-medium tracking-wide text-white capitalize transition-colors duration-300 transform bg-gray-800 rounded-lg hover:bg-gray-700 focus:outline-none focus:ring focus:ring-gray-300 focus:ring-opacity-50"
+            disabled={formik.isSubmitting}
+            type="submit">
                     Inscription
             </button>
+            <ClipLoader
+                loading={isLoading}
+                size={50}
+                aria-label="Loading Spinner"
+                data-testid="loader"
+              />
         </div>
       </form>
 

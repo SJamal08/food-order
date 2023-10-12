@@ -5,125 +5,122 @@ import {
   Typography,
   Button,
   IconButton,
+  Badge,
+  Drawer,
 } from "@material-tailwind/react";
+import { Bars3Icon, MagnifyingGlassIcon, ShoppingCartIcon } from "@heroicons/react/24/solid";
+import { useAppSelector } from "../logic/redux/reduxHooks";
+import { OrderSelectors } from "../logic/redux/reducers/OrderReducer";
+import { foodSelectors } from "../logic/redux/reducers/FoodReducer";
+import { useNavigate } from "react-router-dom";
+import { authSelectors } from "../logic/redux/reducers/AuthReducer";
  
 export function NavbarDefault() {
 
 
   const [openNav, setOpenNav] = React.useState(false);
- 
-  React.useEffect(() => {
-    window.addEventListener(
-      "resize",
-      () => window.innerWidth >= 960 && setOpenNav(false),
-    );
-  }, []);
- 
-  const navList = (
-    <ul className="mb-4 mt-2 flex flex-col gap-2 lg:mb-0 lg:mt-0 lg:flex-row lg:items-center lg:gap-6">
-      <Typography
-        as="li"
-        variant="small"
-        color="blue-gray"
-        className="p-1 font-normal"
-      >
-        <a href="#" className="flex items-center">
-          Pages
-        </a>
-      </Typography>
-      <Typography
-        as="li"
-        variant="small"
-        color="blue-gray"
-        className="p-1 font-normal"
-      >
-        <a href="#" className="flex items-center">
-          Account
-        </a>
-      </Typography>
-      <Typography
-        as="li"
-        variant="small"
-        color="blue-gray"
-        className="p-1 font-normal"
-      >
-        <a href="#" className="flex items-center">
-          Blocks
-        </a>
-      </Typography>
-      <Typography
-        as="li"
-        variant="small"
-        color="blue-gray"
-        className="p-1 font-normal"
-      >
-        <a href="#" className="flex items-center">
-          Docs
-        </a>
-      </Typography>
-    </ul>
-  );
+
+  const basket = useAppSelector(OrderSelectors.selectBasket);
+  const foods = useAppSelector(foodSelectors.selectAllFoods);
+  const user = useAppSelector(authSelectors.selectUser);
+
+  const navigate = useNavigate();
  
   return (
-    <Navbar className="mx-auto max-w-screen-xl py-2 px-4 lg:px-8 lg:py-4">
-      <div className="container mx-auto flex items-center justify-between text-blue-gray-900">
-        <Typography
-          as="a"
-          href="#"
-          className="mr-4 cursor-pointer py-1.5 font-medium"
-        >
-          Material Tailwind
-        </Typography>
-        <div className="hidden lg:block">{navList}</div>
-        <Button variant="gradient" size="sm" className="hidden lg:inline-block">
-          <span>Buy Now</span>
-        </Button>
+    <Navbar blurred={false} className='max-w-full flex justify-between letruc '>
+      <div>
         <IconButton
-          variant="text"
-          className="ml-auto h-6 w-6 text-inherit hover:bg-transparent focus:bg-transparent active:bg-transparent lg:hidden"
-          ripple={false}
-          onClick={() => setOpenNav(!openNav)}
+        variant="text"
+        className="ml-auto h-6 w-6 text-inherit hover:bg-transparent focus:bg-transparent active:bg-transparent"
+        ripple={false}
+        onClick={() => setOpenNav(!openNav)}
         >
-          {openNav ? (
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              className="h-6 w-6"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-              strokeWidth={2}
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="M6 18L18 6M6 6l12 12"
-              />
-            </svg>
-          ) : (
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              className="h-6 w-6"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth={2}
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="M4 6h16M4 12h16M4 18h16"
-              />
-            </svg>
-          )}
+          <Bars3Icon className='w-5 h-5' color='black'/>
         </IconButton>
       </div>
-      <MobileNav open={openNav}>
-        <div className="container mx-auto">
-          {navList}
-          <Button variant="gradient" size="sm" fullWidth className="mb-2">
-            <span>Buy Now</span>
-          </Button>
-        </div>
-      </MobileNav>
-    </Navbar>
+
+  <Drawer open={openNav} className="bg-gray-300 text-[#000000]" overlay>
+    <div className="mb-2 flex items-center justify-between px-4">
+      <Typography variant="h5" color="blue-gray">
+        Menu
+      </Typography>
+      <IconButton variant="text" color="blue-gray" onClick={() => setOpenNav(false)}>
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 24 24"
+          strokeWidth={2}
+          stroke="currentColor"
+          className="h-5 w-5"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            d="M6 18L18 6M6 6l12 12"
+          />
+        </svg>
+      </IconButton>
+    </div>
+      <ul className="mb-4 flex flex-col gap-2 lg:mb-0 lg:mt-0 lg:items-center lg:gap-6">
+        <Typography
+          as="li"
+          variant="small"
+          color="blue-gray"
+          className="p-1 font-normal"
+        >
+          <a href="#" className="flex items-center font-bold text-[#000000]">
+            Pages
+          </a>
+        </Typography>
+        <Typography
+          as="li"
+          variant="small"
+          color="blue-gray"
+          className="p-1 font-normal"
+        >
+          <a href="#" className="flex items-center font-bold text-[#000000]">
+            Account: {user?.email || ""}
+          </a>
+        </Typography>
+        <Typography
+          as="li"
+          variant="small"
+          color="blue-gray"
+          className="p-1 font-normal"
+        >
+          <a href="#" className="flex items-center font-bold text-[#000000]">
+            Blocks
+          </a>
+        </Typography>
+        <Typography
+          as="li"
+          variant="small"
+          color="blue-gray"
+          className="p-1 font-normal"
+        >
+          <a href="#" className="flex items-center font-bold text-[#000000]">
+            Docs
+          </a>
+        </Typography>
+      </ul>
+  </Drawer>
+  <div className='flex pl-2 pr-2'>
+    <Badge content={basket.reduce((previous, current) => previous + current.quantity, 0)}  className={`${foods.length === 0 ? "hidden": ""}`} >
+      <IconButton
+        variant="text"
+        className="h-6 w-6 text-inherit mr-2"
+        onClick={() => navigate('/basket')}
+      >
+        <ShoppingCartIcon className='w-5 h-5' color='black' />
+      </IconButton>
+    </Badge>
+    <IconButton
+      variant="text"
+      className="h-6 w-6 text-inherit space-x-2"
+    >
+      <MagnifyingGlassIcon className='w-5 h-5' color='black'/>
+    </IconButton>
+  </div>
+</Navbar>
   );
 }

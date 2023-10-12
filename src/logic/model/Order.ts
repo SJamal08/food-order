@@ -1,7 +1,9 @@
 import { CartItem } from "./CartItem";
+import { User } from "./User";
 
 export interface Order {
     id: number | string,
-    idUser: number | string,
-    basket: CartItem[]
+    user: User,
+    basket: CartItem[],
+    isPayed: boolean
 }

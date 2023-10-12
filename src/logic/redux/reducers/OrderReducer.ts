@@ -10,17 +10,30 @@ import { Food } from "../../model/Food";
 export const ordercontroller = new Ordercontroller(new StrapiOrderRepository());
 interface OrderReducerState {
     basket: CartItem[],
-    order: Order
+    // order: Order
 
 }
 
 const initialState: OrderReducerState = {
-    basket: [],
-    order: {
-        basket: [],
-        idUser: 0,
-        id: ""
-    }
+    basket: [
+        {
+            "food": {
+                "id": 1,
+                "title": "pepperoni",
+                "description": "lorem ipsum",
+                "price": 9.99,
+                "calories": 495,
+                "img": "https://clipart-library.com/images_k/transparent-pizza/transparent-pizza-21.png"
+            },
+            "quantity": 1,
+            "size": "M"
+        }
+    ],
+    // order: {
+    //     basket: [],
+    //     user: 0,
+    //     id: ""
+    // }
     
 }
 

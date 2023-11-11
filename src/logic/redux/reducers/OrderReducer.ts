@@ -10,30 +10,26 @@ import { Food } from "../../model/Food";
 export const ordercontroller = new Ordercontroller(new StrapiOrderRepository());
 interface OrderReducerState {
     basket: CartItem[],
-    // order: Order
+    myOrders: Order[]
 
 }
 
 const initialState: OrderReducerState = {
     basket: [
-        {
-            "food": {
-                "id": 1,
-                "title": "pepperoni",
-                "description": "lorem ipsum",
-                "price": 9.99,
-                "calories": 495,
-                "img": "https://clipart-library.com/images_k/transparent-pizza/transparent-pizza-21.png"
-            },
-            "quantity": 1,
-            "size": "M"
-        }
+        // {
+        //     "food": {
+        //         "id": 1,
+        //         "title": "pepperoni",
+        //         "description": "lorem ipsum",
+        //         "price": 9.99,
+        //         "calories": 495,
+        //         "img": "https://clipart-library.com/images_k/transparent-pizza/transparent-pizza-21.png"
+        //     },
+        //     "quantity": 1,
+        //     "size": "M"
+        // }
     ],
-    // order: {
-    //     basket: [],
-    //     user: 0,
-    //     id: ""
-    // }
+    myOrders: []
     
 }
 
@@ -41,6 +37,7 @@ export const OrderSlice = createSlice({
     name: 'order',
     initialState,
     reducers: {  
+        //       ------ BASKET ACTIONS ------
         setBasket: (state , action: PayloadAction<CartItem[]>) => {
             state.basket = action.payload;
         },
@@ -67,13 +64,17 @@ export const OrderSlice = createSlice({
             else {
                 basket.push({food: food,quantity: 1, size: size });
             }
-        },
-         
+        },    
         removeFromBasket: (state , action: PayloadAction<CartItem>) => {
             let {basket} = state;
             const element = action.payload;
             state.basket = basket.filter(el => el.food.id !== element.food.id);
-        }
+        },
+
+        //  ------ ORDERS ACTIONS -------
+        setOrders: (state , action: PayloadAction<Order[]>) => {
+            state.myOrders = action.payload;
+        },
     },
   })
 
@@ -94,7 +95,8 @@ export const OrderSlice = createSlice({
 
   const updateQuantity2 = (basket: CartItem[], cartItem: CartItem, add: number) => {
     // const index = basket.findIndex(el => el.food.id === cartItem.food.id);
-    basket[index(basket, cartItem)] = {...cartItem, quantity: cartItem.quantity + add};
+    if(!(basket[index(basket, cartItem)].quantity === 0 && add === -1))
+        basket[index(basket, cartItem)] = {...cartItem, quantity: cartItem.quantity + add};
     return basket;
   }
   const index = (basket: CartItem[], cartItem: CartItem) =>  basket.findIndex(el => el.food.id === cartItem.food.id);
@@ -102,10 +104,12 @@ export const OrderSlice = createSlice({
 export const OrderActions = OrderSlice.actions
 
 const selectBasket = (state: RootState) => state.orderReducer.basket 
+const selectMyOrders = (state: RootState) => state.orderReducer.myOrders 
 
 
 export const OrderSelectors = {
     selectBasket,
+    selectMyOrders,
 }
 
 export default OrderSlice.reducer

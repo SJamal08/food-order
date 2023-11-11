@@ -1,6 +1,5 @@
 import { ShoppingBagIcon } from '@heroicons/react/24/outline';
-import { ChevronLeftIcon, FireIcon, HeartIcon,  } from '@heroicons/react/24/solid';
-import { Navbar, IconButton } from '@material-tailwind/react';
+import { FireIcon } from '@heroicons/react/24/solid';
 import React, { useState } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom';
 import  { OrderActions } from "../logic/redux/reducers/OrderReducer";
@@ -61,8 +60,8 @@ function PizzaDetailPage() {
     }
 
     const addToBasket = () => {
-        dispatch(OrderActions.addInBasket({ food: pizza, size: size[sizeSelected].tag}));
-        navigate(ROUTES.homePage);
+        dispatch(OrderActions.addInBasket({ food: {...pizza, price: size[sizeSelected].price}, size: size[sizeSelected].tag}));
+        navigate(ROUTES.basketViewPage);
     }
 
   return (
@@ -110,20 +109,5 @@ function PizzaDetailPage() {
         </div>
   )
 }
-
-
-// function PizzaDetailPage() {
-//   return (
-//     <div className='bg-yellow-300 flex flex-col h-screen'>
-//         PizzaDetailPage
-//         <div className='bg-red-500 flex-1'>
-// hello
-//         </div>
-//         <div className='bg-green-500 flex-1'>
-// fils
-//         </div>
-//     </div>
-//   )
-// }
 
 export default PizzaDetailPage

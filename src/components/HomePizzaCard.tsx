@@ -6,21 +6,15 @@ import {
 import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom';
 import { Food } from '../logic/model/Food';
+import { ROUTES } from '../utils/constants';
 
 function HomePizzaCard({pizza}: {pizza: Food}) {
 
   const navigate = useNavigate();
 
-    const [isLiked, setIsLiked] = useState(false);
-    const [isRotating, setisRotating] = useState(false);
-    // const [rotationAngle, setrotationAngle] = useState(0)
+  const [isLiked, setIsLiked] = useState(false);
+  const [isRotating, setisRotating] = useState(false);
 
-    // const rotation = () => {
-    //     setrotationAngle(rotationAngle+180);
-    //     if (rotationAngle === 360) {
-    //         setrotationAngle(0);
-    //     }
-    // }
   return (
     <div>
         <div className="w-80 shadow-lg pb-2">
@@ -40,7 +34,7 @@ function HomePizzaCard({pizza}: {pizza: Food}) {
                 </div>
             </div>
             <div className="text-justify px-5 ">
-                <Typography variant="h4" color="blue-gray" className="mb-2 cursor-pointer hover:underline" onClick={() => navigate('/details', {state: {pizza}})}>
+                <Typography variant="h4" color="blue-gray" className="mb-2 cursor-pointer hover:underline" onClick={() => navigate(ROUTES.foodDetailPage, {state: {pizza}})}>
                     {pizza.title}
                 </Typography>
                 <Typography color="blue-gray" className="font-medium" textGradient>

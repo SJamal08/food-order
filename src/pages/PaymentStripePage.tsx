@@ -18,7 +18,7 @@ import { toast } from 'react-toastify';
 // recreating the `Stripe` object on every render.
 const publish_key= process.env.REACT_APP_PUBLISHABLE_KEY!;
 
-const CheckoutForm = () => {
+const CheckoutForm = ({amount}: { amount: number}) => {
     const stripe = useStripe();
     const elements = useElements();
     const user = useAppSelector(authSelectors.selectUser);
@@ -45,7 +45,8 @@ const CheckoutForm = () => {
       }
       const order: OrderPayload = {
         basket: basket, 
-        user: user!
+        user: user!,
+        amount: amount
       }
       const orderCreated = await ordercontroller.create(order);
       if(orderCreated){
@@ -125,7 +126,7 @@ export default function PaymentStripePage() {
           error
         </div> :
         <Elements stripe={stripePromise} options={options}>
-          <CheckoutForm />
+          <CheckoutForm amount={amount}/>
         </Elements>
       }
 

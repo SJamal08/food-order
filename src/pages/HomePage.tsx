@@ -1,20 +1,15 @@
 import React, { useRef, useState } from 'react'
 import {
-  Badge,
-  Button,
-  IconButton, MobileNav, Navbar, Typography,
+  IconButton,
 } from "@material-tailwind/react"
 import {
   PencilIcon,
   LightBulbIcon,
 } from "@heroicons/react/24/outline";
 import HomePizzaCard from '../components/HomePizzaCard'
-import { Bars3Icon, MagnifyingGlassIcon, ShoppingCartIcon } from '@heroicons/react/24/solid';
 import { useAppSelector } from '../logic/redux/reduxHooks';
 import { foodSelectors } from '../logic/redux/reducers/FoodReducer';
-import  { OrderActions, OrderSelectors } from "../logic/redux/reducers/OrderReducer";
-import { useNavigate, useSearchParams } from 'react-router-dom';
-import { NavbarDefault } from '../components/Navbar';
+// import { appSocket } from '../logic/socket';
 
 function HomePage() {
 
@@ -28,10 +23,6 @@ function HomePage() {
   ]
 
   const foods = useAppSelector(foodSelectors.selectAllFoods);
-  const basket = useAppSelector(OrderSelectors.selectBasket);
-
-const navigate = useNavigate();
-
 
   const [filterSelected, setfilterSelected] = useState(0);
 
@@ -55,34 +46,6 @@ const navigate = useNavigate();
     containerRef.current!.scrollLeft = scrollX - newScrollX;
     setScrollX(newScrollX);
   };
-
-  const navList = (
-    <ul className="mb-4 mt-2 flex flex-col gap-2">
-      <Typography
-        as="li"
-        variant="small"
-        color="blue-gray"
-        className="p-1 font-normal"
-      >
-        <p className="flex items-center cursor-pointer text-black">
-          Pages
-        </p>
-      </Typography>
-      <Typography
-        as="li"
-        variant="small"
-        color="blue-gray"
-        className="p-1 font-normal"
-        // onClick={() => }
-      >
-        <p className="flex items-center cursor-pointer text-">
-          My Orders
-        </p>
-      </Typography>
-    </ul>
-  );
-
-  const [openNav, setOpenNav] = useState(false);
 
   return (
     <div className=''>
@@ -135,7 +98,14 @@ const navigate = useNavigate();
         </h2>
         <div className='flex flex-row p-3'>
           <IconButton className="rounded-full  bg-yellow-800">
-            <LightBulbIcon className="h-5 w-5" color='black'/>
+            <LightBulbIcon className="h-5 w-5" color='black' 
+            // onClick={() => {
+            //   console.log("clicked")
+            //         appSocket.emit("Test", {
+            //           firstname: "Jamal"
+            //         })
+            // }}
+            />
           </IconButton>
           <div className='ml-3'>
             <h2 className='font-medium text-base text-opacity-50 text-black'>your delivery address</h2>

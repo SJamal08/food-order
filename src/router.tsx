@@ -11,6 +11,7 @@ import RegisterPage from './pages/RegisterPage';
 import { NavbarDefault } from './components/Navbar';
 import PaymentStripePage from './pages/PaymentStripePage';
 import SuccessPayment from './pages/SuccessPayment';
+import MyOrdersPage from './pages/MyOrdersPage';
 
 
 function AppLayout() {
@@ -33,6 +34,7 @@ function AppRouter() {
             <Route path="/login"  element={<LoginPage/>}/>
             <Route path="/register"  element={<RegisterPage/>}/>
             <Route path="/payment"  element={<PaymentStripePage/>}/>
+            <Route path="/myOrders"  element={<MyOrdersPage/>}/>
             {/* <Route path={`/orderSuccess/:orderId`}  element={<SuccessPayment/>}/> localhost:3000/ordersuccess/24324343 // Route params */}
             <Route path={`/orderSuccess`}  element={<SuccessPayment/>}/> 
             {/* localhost:3000/ordersuccess/24324343 */}

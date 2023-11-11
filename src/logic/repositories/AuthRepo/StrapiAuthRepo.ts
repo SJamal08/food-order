@@ -5,6 +5,11 @@ import { AuthResponse, IAuthRepo, LoginPayload, RegisterPayload } from "./IAuthR
 
 const api_base_url = API_BASE_URL.strapiUrl;
 export class StrapiAuthRepo implements IAuthRepo {
+    async isAuthorized(idUser: string | number): Promise<Boolean> {
+        const current = await this.me();
+        if (!current || current.id !== idUser) return Promise.resolve(false);
+        return Promise.resolve(true);
+    }
     async me(): Promise<User | null> {
         if (!localStorage.getItem('jwt')) {
             return null;
@@ -14,6 +19,7 @@ export class StrapiAuthRepo implements IAuthRepo {
             endpoint: api_base_url+'/users/me',
             headers: getStrapiAuthHeaders()
         });
+        if (!response) return null;
         const user: User = {
             id: response.id,
             email: response.email,

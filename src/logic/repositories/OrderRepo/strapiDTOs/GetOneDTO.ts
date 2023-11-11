@@ -58,3 +58,18 @@ export const buildOrderFromDTO = (obj : any) : Order => {
 return order;
 
 }
+
+export const buildArrayOfOrdersFromDTO = (obj : any) : Order[] => {
+    const data = obj.data;
+    return data.map( (order: any) => {
+        const {basket, user, isPayed, amount} = order.attributes;
+        const newOrder: Order = {
+            id: order.id,
+            basket,
+            isPayed,
+            user,
+            amount
+        }
+        return newOrder
+    });
+}

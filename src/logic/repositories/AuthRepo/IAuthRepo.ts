@@ -21,5 +21,6 @@ export interface IAuthRepo {
     register(payload: RegisterPayload) : Promise<AuthResponse | null>,
     login(payload: LoginPayload) : Promise<AuthResponse | null>,
     me(): Promise<User | null>,
-    logout(): Promise<boolean>
+    logout(): Promise<boolean>,
+    isAuthorized(idUser: string | number): Promise<Boolean>
 }

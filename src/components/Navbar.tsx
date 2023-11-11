@@ -14,6 +14,7 @@ import { OrderSelectors } from "../logic/redux/reducers/OrderReducer";
 import { foodSelectors } from "../logic/redux/reducers/FoodReducer";
 import { useNavigate } from "react-router-dom";
 import { authSelectors } from "../logic/redux/reducers/AuthReducer";
+import { ROUTES } from "../utils/constants";
  
 export function NavbarDefault() {
 
@@ -41,8 +42,8 @@ export function NavbarDefault() {
 
   <Drawer open={openNav} className="bg-gray-300 text-[#000000]" overlay>
     <div className="mb-2 flex items-center justify-between px-4">
-      <Typography variant="h5" color="blue-gray">
-        Menu
+      <Typography className="cursor-pointer" variant="h5" color="blue-gray" onClick={() => navigate(ROUTES.homePage)}>
+        Pizza Order
       </Typography>
       <IconButton variant="text" color="blue-gray" onClick={() => setOpenNav(false)}>
         <svg
@@ -88,8 +89,8 @@ export function NavbarDefault() {
           color="blue-gray"
           className="p-1 font-normal"
         >
-          <a href="#" className="flex items-center font-bold text-[#000000]">
-            Blocks
+          <a href={ROUTES.myOrderPage} className="flex items-center font-bold text-[#000000]">
+            My orders
           </a>
         </Typography>
         <Typography
@@ -109,7 +110,7 @@ export function NavbarDefault() {
       <IconButton
         variant="text"
         className="h-6 w-6 text-inherit mr-2"
-        onClick={() => navigate('/basket')}
+        onClick={() => navigate(ROUTES.basketViewPage)}
       >
         <ShoppingCartIcon className='w-5 h-5' color='black' />
       </IconButton>

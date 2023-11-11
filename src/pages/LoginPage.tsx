@@ -4,7 +4,6 @@ import { useNavigate } from 'react-router-dom';
 import { useAppDispatch } from '../logic/redux/reduxHooks';
 import { useFormik } from 'formik';
 import { authActions, authController } from '../logic/redux/reducers/AuthReducer';
-import * as Yup from 'yup';
 import { ROUTES } from '../utils/constants';
 import { ClipLoader } from 'react-spinners';
 import { toast } from 'react-toastify';
@@ -15,26 +14,18 @@ function LoginPage() {
     const dispatch = useAppDispatch();
     const [isLoading, setIsLoading] = useState(false);
 
-    const userSchema = Yup.object({
-        email:  Yup.string().email("Le mail est invalide ").required("le mail est requis"),
-        password:  Yup.string().min(4 ,  "Minimun 4 lettres please ").required("le mot de passe est requis"),
-      });
     const formik = useFormik({
-        initialValues: {email : "user@gmail.com"  , password : "strapiPassword" },
-        validationSchema: userSchema,
+        initialValues: authController.loginInitialValues,
+        validationSchema: authController.loginUserSchema,
         onSubmit: async (values) => {
           setIsLoading(true);
-          console.log("values in login")
-          console.log(values)
          const result =  await authController.login({email: values.email, password: values.password});
          if(result){
           dispatch(authActions.setAuth(result));
-          console.log("reussite");
           navigate(ROUTES.homePage);
           toast.success("Login Successfully");
          } else {
            toast.error("Login Error! Retry later");
-          console.log("echec");
          }
          setIsLoading(false);
         },
@@ -73,7 +64,7 @@ function LoginPage() {
      {" "}
      Pas encore de compte?{" "}
      <a
-    //    href={ROUTES.register}
+       href={ROUTES.registerPage}
        className="font-medium text-gray-700  hover:underline"
      >
        S'inscrire

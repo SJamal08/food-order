@@ -21,9 +21,9 @@ function SuccessPayment() {
             console.log("connected user")
             console.log(user)
 
-            // if (!order || ( order.user.id !== user?.id ) || order.isPayed ) return;
+            if (!order || ( order.user.id !== user?.id ) || order.isPayed ) return;
             console.log("test")
-            const updatedOrder = await ordercontroller.update(orderId, {user: {username: "Richard"}});
+            const updatedOrder = await ordercontroller.update(orderId, {isPayed: true});
 
             if (updatedOrder) {
                 console.log("reussite")

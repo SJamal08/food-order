@@ -4,7 +4,6 @@ import { useNavigate } from 'react-router-dom';
 import { useAppDispatch } from '../logic/redux/reduxHooks';
 import { useFormik } from 'formik';
 import { authActions, authController } from '../logic/redux/reducers/AuthReducer';
-import * as Yup from 'yup';
 import { ROUTES } from '../utils/constants';
 import { toast } from 'react-toastify';
 import { ClipLoader } from 'react-spinners';
@@ -16,33 +15,22 @@ function RegisterPage() {
     const dispatch = useAppDispatch();
     const [isLoading, setIsLoading] = useState(false);
 
-    const userSchema = Yup.object({
-        username: Yup.string(),
-        email:  Yup.string().email("Le mail est invalide ").required("le mail est requis"),
-        password:  Yup.string().min(4 ,  "Minimun 4 lettres please ").required("le mot de passe est requis"),
-      });
     const formik = useFormik({
-        initialValues: {username:"SJamal08", email : "user@gmail.com"  , password : "strapiPassword" },
-        validationSchema: userSchema,
+        initialValues: authController.registerInitialValues,
+        validationSchema: authController.registerUserSchema,
         onSubmit: async (values) => {
           setIsLoading(true);
-          console.log("values in register")
-          console.log(values)
           const customerId = await stripeController.createCustomer({
             email: values.email,
             name: values.username
           });
          const result =  await authController.register({...values,customerId})
-         console.log("result apres register")
-         console.log(result)
          if(result){
           dispatch(authActions.setAuth(result));
-          console.log("reussite");
           navigate(ROUTES.homePage);
           toast.success("Registered Successfully");
          } else {
            toast.error("Register Error! Retry later");
-          console.log("echec");
          }
          setIsLoading(false);
         },

@@ -3,6 +3,9 @@ import { IOrderRepository, OrderPayload } from "./IOrderRepo";
 
 
 export class InMemoryOrderRepo implements IOrderRepository {
+    getAllForOneUser(idUser: string | number): Promise<Order[] | null> {
+        throw new Error("Method not implemented.");
+    }
     create(order: OrderPayload): Promise<Order | null> {
         throw new Error("Method not implemented.");
     }

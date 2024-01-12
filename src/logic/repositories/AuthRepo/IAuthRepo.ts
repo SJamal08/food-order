@@ -12,6 +12,10 @@ export interface LoginPayload {
     password: string,
 }
 
+export interface forgotPasswordPayload {
+    email: string,
+}
+
 export interface AuthResponse {
     user: User,
     jwt?: string
@@ -22,5 +26,6 @@ export interface IAuthRepo {
     login(payload: LoginPayload) : Promise<AuthResponse | null>,
     me(): Promise<User | null>,
     logout(): Promise<boolean>,
+    forgotPassword(payload: forgotPasswordPayload): Promise<any>,
     isAuthorized(idUser: string | number): Promise<Boolean>
 }

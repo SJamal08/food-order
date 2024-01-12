@@ -1,10 +1,23 @@
 import { API_BASE_URL } from "../../../utils/constants";
 import { User } from "../../model/User";
 import { makeRequest } from "../makeRequest";
-import { AuthResponse, IAuthRepo, LoginPayload, RegisterPayload } from "./IAuthRepo";
+import { AuthResponse, IAuthRepo, LoginPayload, RegisterPayload, forgotPasswordPayload } from "./IAuthRepo";
 
 const api_base_url = API_BASE_URL.strapiUrl;
 export class StrapiAuthRepo implements IAuthRepo {
+    async forgotPassword(payload: forgotPasswordPayload): Promise<any> {
+        const url = 'http:/localhost:1337/admin/plugins/users-permissions/auth/reset-password';
+        const test = {
+            email: payload.email,
+        }
+        const response = await makeRequest({
+            method: "post",
+            endpoint: api_base_url+'/auth/forgot-password',
+            headers: getStrapiAuthHeaders(),
+            data: test
+        });
+        return response;
+    }
     async isAuthorized(idUser: string | number): Promise<Boolean> {
         const current = await this.me();
         if (!current || current.id !== idUser) return Promise.resolve(false);
@@ -33,7 +46,12 @@ export class StrapiAuthRepo implements IAuthRepo {
         return user;
     }
     logout(): Promise<boolean> {
-        throw new Error("Method not implemented.");
+        try {
+            localStorage.removeItem('jwt');
+            return Promise.resolve(true);
+        } catch (error) {
+            return Promise.resolve(false);
+        }
     }
     async register(payload: RegisterPayload): Promise<AuthResponse | null> {
         const response : AuthResponse = await makeRequest({

@@ -9,12 +9,13 @@ import {
   Drawer,
 } from "@material-tailwind/react";
 import { Bars3Icon, MagnifyingGlassIcon, ShoppingCartIcon } from "@heroicons/react/24/solid";
-import { useAppSelector } from "../logic/redux/reduxHooks";
+import { useAppDispatch, useAppSelector } from "../logic/redux/reduxHooks";
 import { OrderSelectors } from "../logic/redux/reducers/OrderReducer";
 import { foodSelectors } from "../logic/redux/reducers/FoodReducer";
 import { useNavigate } from "react-router-dom";
-import { authSelectors } from "../logic/redux/reducers/AuthReducer";
+import { authActions, authController, authSelectors } from "../logic/redux/reducers/AuthReducer";
 import { ROUTES } from "../utils/constants";
+import { toast } from "react-toastify";
  
 export function NavbarDefault() {
 
@@ -24,8 +25,23 @@ export function NavbarDefault() {
   const basket = useAppSelector(OrderSelectors.selectBasket);
   const foods = useAppSelector(foodSelectors.selectAllFoods);
   const user = useAppSelector(authSelectors.selectUser);
+  const dispatch = useAppDispatch();
 
   const navigate = useNavigate();
+
+  const isLogged = user ? true : false;
+
+  const logout = async () => {
+    console.log("logout launcher")
+    const response = await authController.logout();
+    if ( !response) toast("Error Logout")
+    else {
+      dispatch(authActions.setCurrentUser(null))
+      navigate(ROUTES.homePage);
+      toast("Logout succesfully")
+      setOpenNav(false)
+    }
+  }
  
   return (
     <Navbar blurred={false} className='max-w-full flex justify-between letruc '>
@@ -70,7 +86,7 @@ export function NavbarDefault() {
           className="p-1 font-normal"
         >
           <a href="#" className="flex items-center font-bold text-[#000000]">
-            Pages
+            BIENVENUE {user?.username || ""}
           </a>
         </Typography>
         <Typography
@@ -89,7 +105,23 @@ export function NavbarDefault() {
           color="blue-gray"
           className="p-1 font-normal"
         >
-          <a href={ROUTES.myOrderPage} className="flex items-center font-bold text-[#000000]">
+          {
+            isLogged ? 
+            <p className="flex items-center font-bold text-[#000000] cursor-pointer" onClick={logout}>
+            LOGOUT
+          </p> : 
+          <a href={ROUTES.loginPage} className="flex items-center font-bold text-[#000000]">
+          LOGIN
+        </a>
+          }
+        </Typography>
+        <Typography
+          as="li"
+          variant="small"
+          color="blue-gray"
+          className="p-1 font-normal"
+        >
+          <a href={isLogged ? ROUTES.myOrderPage : ROUTES.loginPage} className="flex items-center font-bold text-[#000000]">
             My orders
           </a>
         </Typography>

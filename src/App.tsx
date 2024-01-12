@@ -12,15 +12,15 @@ import { appSocket } from './logic/socket';
 function App() {
   const dispatch = useAppDispatch();
   useEffect(() => {
-    appSocket.on("connect", () => {
-      console.log("mon socket ici")
-      console.log(appSocket.id);
-    });
-    appSocket.on("notification", (params) => {
-      console.log("params")
-      console.log(params);
-      toast("nouvelle notif")
-    });
+    // appSocket.on("connect", () => {
+    //   console.log("mon socket ici")
+    //   console.log(appSocket.id);
+    // });
+    // appSocket.on("notification", (params) => {
+    //   console.log("params")
+    //   console.log(params);
+    //   toast("nouvelle notif")
+    // });
     const getAllFoods = async () => {
       const allFoods = await foodcontroller.getAll();
       if (allFoods)

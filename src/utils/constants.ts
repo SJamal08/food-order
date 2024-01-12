@@ -6,6 +6,7 @@ export const ROUTES = {
     registerPage: '/register',
     paymentStripePage: '/payment',
     myOrderPage: '/myOrders',
+    forgotPassword: '/forgotPassword',
 }
 
 export const API_BASE_URL = {

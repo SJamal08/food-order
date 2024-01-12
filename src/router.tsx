@@ -12,6 +12,7 @@ import { NavbarDefault } from './components/Navbar';
 import PaymentStripePage from './pages/PaymentStripePage';
 import SuccessPayment from './pages/SuccessPayment';
 import MyOrdersPage from './pages/MyOrdersPage';
+import ForgotPAssword from './pages/ForgotPAssword';
 
 
 function AppLayout() {
@@ -32,6 +33,7 @@ function AppRouter() {
             <Route path="/details"  element={<PizzaDetailPage/>}/>
             <Route path="/basket"  element={<BasketViewPage/>}/>
             <Route path="/login"  element={<LoginPage/>}/>
+            <Route path="/forgotPassword"  element={<ForgotPAssword/>}/>
             <Route path="/register"  element={<RegisterPage/>}/>
             <Route path="/payment"  element={<PaymentStripePage/>}/>
             <Route path="/myOrders"  element={<MyOrdersPage/>}/>

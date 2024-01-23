@@ -23,9 +23,9 @@
 - As a Admin
 - [x] CRUD Pizzas
 - [] CRUD code promo
-- [] Lister les clients
-- [] Lister les commandes
-- [] Modifier une commande
+- [*] Lister les clients
+- [*] Lister les commandes
+- [*] Modifier une commande
 - [] Télécharger un fichier excel avec les commandes (du mois , de la journée etc...)
 - [] Télécharger un fichier excel avec la liste des clients (du mois , de la journée etc...)
 - [] Utiliser les sockets pour envoyer des notifications

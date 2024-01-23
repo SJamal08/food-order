@@ -1,13 +1,11 @@
-import React, { useState } from "react";
+import React, { ReactNode, useState } from "react";
 import CardMenu from "../../../../components/card/CardMenu";
 import Card from "../../../../components/card";
 import * as yup from 'yup';
 
 import { Input, Checkbox, Typography, Button, IconButton, Drawer } from "@material-tailwind/react";
-import { useFormik } from "formik";
 import { foodActions, foodcontroller, foodSelectors } from "../../../../../../logic/redux/reducers/FoodReducer";
 import { Food } from "../../../../../../logic/model/Food";
-import AppInput from "../../../../../../components/AppInput";
 import { getPropertiesNameFromObject, getValuesArrayFromObject } from "../../../../../../utils/functions";
 import { MinusIcon, PlusIcon } from "@heroicons/react/24/solid";
 
@@ -61,37 +59,11 @@ function DeleteDrawer ({obj, action}: {obj: any, action: Function}) {
       )
 }
 
-function UpdateDrawer ({obj, action}: {obj: any, action: Function}) {
+function UpdateDrawer ({obj, action, UpdateForm}: {obj: any, action: Function, UpdateForm: any}) {
   const [openUpdate, setOpenUpdate] = React.useState(false);
   const openUpdateDrawer = () => setOpenUpdate(true);
   const closeUpdateDrawer = () => setOpenUpdate(false);
 
-  const yupSchema = yup.object().shape({
-    title: yup.string().min(3).max(30).required(),
-    description: yup.string().min(3).max(500).required(),
-    price: yup.number().required(),
-    calories: yup.number().required(),
-    img: yup.string().min(3).required(),
-  });
-
-  const formik = useFormik({
-    initialValues: {
-      title: obj.title,
-      description: obj.description,
-      price: obj.price,
-      calories: obj.calories,
-      img: obj.img,
-    },
-    validationSchema: yupSchema,
-    onSubmit: async (values) => {
-     executeAction(values)
-    },
-  });
-
-  const executeAction = (values: any) => {
-    action(obj.id, values)
-    closeUpdateDrawer()
-  }
       return (
         <React.Fragment>
         <Button onClick={openUpdateDrawer} className="p-3 m-3 bg-blue-600" fullWidth>Update</Button>
@@ -117,58 +89,22 @@ function UpdateDrawer ({obj, action}: {obj: any, action: Function}) {
               </svg>
             </IconButton>
           </div>
-          <form className={`mt-8 mb-2 max-w-96 `} onSubmit={formik.handleSubmit}>
-        <div className="mb-4 gap-6 flex flex-col">
-          <AppInput label="title" value={formik.values.title} formik={formik} />
-          <AppInput  label="description"  value={formik.values.description} formik={formik} />
-          <AppInput type="number"  label="price" value={formik.values.price} formik={formik} />
-          <AppInput type="number"  label="calories"  value={formik.values.calories} formik={formik} />
-          <AppInput type="text"  label="img"  value={formik.values.img} formik={formik} />
-        </div>
-          <Button type="submit" className="mt-6 " >
-            enter
-          </Button>
-
-      </form>
+      {UpdateForm({obj, action})}
         </Drawer>
       </React.Fragment>
       )
 }
 
-function CheckTable(props: { tableData: any }) {
+function CheckTable(props: { tableData: any, AddForm?: JSX.Element, controller: any, UpdateForm?: any}) {
 
   const [isHide, setIsHide] = useState(true);
-  const { tableData } = props;
+  const { tableData, AddForm, controller, UpdateForm } = props;
   const headers = getPropertiesNameFromObject(tableData[0]);
-
-  const yupSchema = yup.object().shape({
-    title: yup.string().min(3).max(30).required(),
-    description: yup.string().min(3).max(500).required(),
-    price: yup.number().required(),
-    calories: yup.number().required(),
-    img: yup.string().min(3).required(),
-  });
-
-  const formik = useFormik({
-    initialValues: {
-      title: '',
-      description: '',
-      price: 0,
-      calories: 0,
-      img: '',
-    },
-    validationSchema: yupSchema,
-    onSubmit: async (values) => {
-          const newFood = await foodcontroller.create(values);
-          let updatedList: Food[] = [...tableData,newFood];
-          foodActions.setFoodList(updatedList);
-          setData(updatedList)
-    },
-  });
 
   const deleteLine = async (id: number | string) => {
     console.log("start")
-    const success = await foodcontroller.delete(id);
+    // const success = await foodcontroller.delete(id);
+    const success = await controller.delete(id);
     console.log("next")
     if (success) {
       let updatedList: Food[] = [...tableData];
@@ -180,7 +116,7 @@ function CheckTable(props: { tableData: any }) {
     }
   }
 
-  const updateLine = async (id: number | string, values: any) => {
+  const updateLine = async (id: number | string, values: any, ) => {
     const updatedFood = await foodcontroller.update(id, values);
     if(updatedFood) {
       let updatedList: Food[] = [...tableData];
@@ -192,13 +128,22 @@ function CheckTable(props: { tableData: any }) {
       } 
     }
   }
+
+  const formatLine = (info: any) => {
+    if (typeof info == "object") return JSON.stringify(info);
+    return info.toString();
+  }
   
   const displayNewline = (data: any) => {
     const line: any = [];
     getValuesArrayFromObject(data).forEach((info: any) => {
       if(info.toString().startsWith("http"))
         line.push(<td><img className={`border-none rounded-none h-10 mx-auto`} src={info} alt="" /> </td>)
-      else line.push(<td>{info}</td>)
+      else 
+        {
+          
+          line.push(<td className="max-w-20 flex-1">{formatLine(info)}</td>)
+        }
     }
     );
     return line;
@@ -222,22 +167,11 @@ function CheckTable(props: { tableData: any }) {
         }
       </header>
 
-      <div className="mt-8 overflow-x-scroll xl:overflow-x-hidden">
+      <div className={`mt-8 overflow-x-scroll xl:overflow-x-hidden`}>
         {/* form */}
-        <form className={`mt-8 mb-2 max-w-screen sm:w-96  ${isHide ? 'hidden':''}`} onSubmit={formik.handleSubmit}>
-        <div className="mb-4 flex flex-wrap gap-6">
-
-          <AppInput label="title" value={formik.values.title} formik={formik} />
-          <AppInput  label="description"  value={formik.values.description} formik={formik} />
-          <AppInput type="number"  label="price" value={formik.values.price} formik={formik} />
-          <AppInput type="number"  label="calories"  value={formik.values.calories} formik={formik} />
-          <AppInput type="text"  label="img"  value={formik.values.img} formik={formik} />
+        <div className={`${isHide ? 'hidden':''}`}>
+            {AddForm}
         </div>
-
-        <Button type="submit" className="mt-6" fullWidth>
-          enter
-        </Button>
-      </form>
         <table className="w-full">
           <thead>
             <tr>
@@ -257,11 +191,10 @@ function CheckTable(props: { tableData: any }) {
                   <td>
                     {/* <CardMenu /> */}
                     <div className="flex w-auto justify-around p-6"> 
-                      {/* - */}
-                      {/* <Button onClick={() => deleteLine(data.id)} className="p-3 m-3 bg-red-600" fullWidth>
-                          delete
-                      </Button> */}
-                      <UpdateDrawer obj={data} action={updateLine} />
+                    {
+                      UpdateForm &&
+                      <UpdateDrawer obj={data} action={updateLine} UpdateForm={UpdateForm} />
+                    }
                       <DeleteDrawer obj={data} action={deleteLine} />
                     </div>
                   </td>

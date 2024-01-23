@@ -8,6 +8,7 @@ import { foodActions, foodcontroller } from './logic/redux/reducers/FoodReducer'
 import { authActions, authController } from './logic/redux/reducers/AuthReducer';
 import { OrderActions, ordercontroller } from './logic/redux/reducers/OrderReducer';
 import { appSocket } from './logic/socket';
+import { userActions, userController } from './logic/redux/reducers/UserReducer';
 
 function App() {
   const dispatch = useAppDispatch();
@@ -27,23 +28,40 @@ function App() {
         {
           dispatch(foodActions.setFoodList(allFoods));
         }
-    }
+    };
     const getCurrentUser = async () => {
       const user = await authController.me();
       dispatch(authActions.setCurrentUser(user));
       if(user) {
         getMyOrders(user.id);
       }
-    }
+    };
 
     const getMyOrders = async (id: number | string) => {
       const allOrders = await ordercontroller.getAllForOneUser(id);
 
       if (!allOrders) return;
       dispatch(OrderActions.setOrders(allOrders));
-    }
+    };
+
+    const getAllOrders = async () => {
+      const allOrders = await ordercontroller.getAll();
+
+      if (!allOrders) return;
+      dispatch(OrderActions.setAllOrders(allOrders));
+    };
+
+    const getAllUsers =async () => {
+      const all = await userController.getAll();
+      if(!all) return;
+      dispatch(userActions.setUsers(all));
+    };
+
+    
     getAllFoods();
     getCurrentUser();
+    getAllUsers();
+    getAllOrders();
   }, [dispatch])
   return (
     <div className="">

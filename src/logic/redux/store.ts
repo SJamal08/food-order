@@ -2,12 +2,14 @@ import { configureStore, ThunkAction, Action } from '@reduxjs/toolkit';
 import FoodReducer from './reducers/FoodReducer';
 import OrderReducer from './reducers/OrderReducer';
 import AuthReducer from './reducers/AuthReducer';
+import UserReducer from './reducers/UserReducer';
 
 export const store = configureStore({
   reducer: {
     foodReducer: FoodReducer,
     orderReducer: OrderReducer,
-    authReducer: AuthReducer
+    authReducer: AuthReducer,
+    userReducer: UserReducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({

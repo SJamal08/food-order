@@ -47,7 +47,7 @@ export class StrapiFoodRepository implements IFoodRepository {
         endpoint:`${api_base_url}/foods/${id}`,
         data: { data: formatDataFromFood(data) }
       });
-      const newFood: GetOneDTO = response.data;
+      const newFood: GetOneDTO = response;
             return getOneFoodFromDTO(newFood);
     }
     

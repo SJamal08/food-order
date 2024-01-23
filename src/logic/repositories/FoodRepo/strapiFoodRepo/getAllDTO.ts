@@ -56,6 +56,8 @@ export interface GetAllDTO {
   }
 
   export function getOneFoodFromDTO(dto: GetOneDTO): Food {
+    console.log("in getOneFoodFromDTO")
+    console.log(dto)
         const {Title: title, Description:description, Price: price, img, calories} = dto.data.attributes; 
         const food: Food = {
             id: dto.data.id,

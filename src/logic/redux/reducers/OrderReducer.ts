@@ -10,7 +10,8 @@ import { Food } from "../../model/Food";
 export const ordercontroller = new Ordercontroller(new StrapiOrderRepository());
 interface OrderReducerState {
     basket: CartItem[],
-    myOrders: Order[]
+    myOrders: Order[],
+    allOrders: Order[],
 
 }
 
@@ -29,7 +30,8 @@ const initialState: OrderReducerState = {
         //     "size": "M"
         // }
     ],
-    myOrders: []
+    myOrders: [],
+    allOrders: []
     
 }
 
@@ -75,6 +77,9 @@ export const OrderSlice = createSlice({
         setOrders: (state , action: PayloadAction<Order[]>) => {
             state.myOrders = action.payload;
         },
+        setAllOrders: (state , action: PayloadAction<Order[]>) => {
+            state.allOrders = action.payload;
+        },
     },
   })
 
@@ -105,11 +110,13 @@ export const OrderActions = OrderSlice.actions
 
 const selectBasket = (state: RootState) => state.orderReducer.basket 
 const selectMyOrders = (state: RootState) => state.orderReducer.myOrders 
+const selectAllOrders = (state: RootState) => state.orderReducer.myOrders 
 
 
 export const OrderSelectors = {
     selectBasket,
     selectMyOrders,
+    selectAllOrders
 }
 
 export default OrderSlice.reducer
